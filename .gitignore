@@ -1,0 +1,26 @@
+# Maven 빌드 결과물
+/target/
+
+# IDE 설정 파일 (IntelliJ IDEA)
+.idea/
+/*.iml
+
+# Eclipse 설정 파일
+.classpath
+.project
+.settings/
+
+# VS Code 설정 파일
+.vscode/
+
+# OS 관련 파일
+.DS_Store
+Thumbs.db
+
+# 로그 파일 (필요에 따라)
+*.log
+
+# 환경변수
+/src/main/resources/filters/dev.properties
+/src/main/resources/filters/prod.properties
+/src/main/resources/filters/test.properties
