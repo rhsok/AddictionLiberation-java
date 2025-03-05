@@ -1,16 +1,18 @@
 package com.example.dto;
 
-public class LoginDTO {
+public class SignupDTO {
     private String email;
     private String password;
+    private String name;
 
     // 기본 생성자
-    public LoginDTO() {}
+    public SignupDTO() {}
 
     // 모든 필드를 포함한 생성자
-    public LoginDTO(String email, String password) {
+    public SignupDTO(String email, String password, String name) {
         this.email = email;
         this.password = password;
+        this.name = name;
     }
 
     // Getter, Setter
@@ -25,5 +27,11 @@ public class LoginDTO {
     }
     public void setPassword(String password) {
         this.password = password;
+    }
+    public String getName() {
+        return name;
+    }
+    public void setName(String name) {
+        this.name = name;
     }
 }
