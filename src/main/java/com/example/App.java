@@ -4,22 +4,26 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
-import com.example.controller.UserController;
+import com.example.controller.AuthController;
 import com.example.repository.UserRepository;
+import com.example.routes.AuthRoutes;
 import com.example.service.UserService;
 
-import static spark.Spark.get;
-import static spark.Spark.port;
+import io.javalin.Javalin;
 
 public class App 
 {
     public static void main( String[] args )
     {
-         // Spark Java 서버 포트 설정 (기본 4567)
-        port(4567);
 
-        // 헬스체크 엔드포인트 등록 (추가)
-        get("/ping", (req, res) -> "Server is up and running!");
+        var app = Javalin.create(/*config*/);
+
+        app.before(ctx -> {
+            System.out.println("Request received: " + ctx.method() + " " + ctx.path());
+            if (ctx.contentType() == null) {
+                ctx.contentType("application/json");
+            }
+        });
 
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("AddictionLiberationPU");
         EntityManager em = emf.createEntityManager();
@@ -27,7 +31,15 @@ public class App
         // Repository, Service, Controller 계층 초기화
         UserRepository userRepository = new UserRepository(em);
         UserService userService = new UserService(userRepository);
-        new UserController(userService);  
+        new AuthController(userService);  
+
+        // 라우트 등록 (별도 클래스로 분리)
+        AuthRoutes.register(app);
+
+        app
+        .get("/", ctx -> ctx.result("Hello World"))
+        .start(7070);
+
 
         // 애플리케이션 종료 시 EntityManager 및 팩토리 정리
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
